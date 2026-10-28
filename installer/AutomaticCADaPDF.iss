@@ -1,4 +1,4 @@
-#define AppVersion "7.2.6"
+#define AppVersion "7.2.7"
 #define AppName "Automatic CAD a PDF Converter"
 
 [Setup]
