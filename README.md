@@ -1,37 +1,45 @@
 # 🍪 Automatic CAD a PDF Converter
 
-Aplicación para Windows que detecta láminas en dibujos **DXF** y facilita su exportación a PDF.
+Aplicación para Windows que detecta automáticamente láminas de archivos **DXF** y las convierte a PDF.
 
 > **Creado por Manu · Hecho con GPT**
 
-## Funciones principales
+## Funciones
 
-- Detección automática de marcos de láminas en archivos DXF.
-- Vista previa de cada lámina y mapa interactivo (beta) para localizarlas y seleccionarlas.
-- Selección por páginas, rangos o grupos desde el mapa.
-- Exportación de todas las láminas a un solo PDF o a archivos PDF individuales.
-- Tamaños de papel A0, A1, A2, A3 y A4: detección automática o selección manual.
-- Barra de progreso y opción para evitar que se abra el visor PDF durante cada conversión.
-- Impresión con motor de AutoCAD para mayor fidelidad; el modo independiente es experimental.
+- Detección automática de marcos de láminas.
+- Visor clásico y mapa interactivo de láminas, con selección por clic o arrastre.
+- Vista de mapa a pantalla completa con detalles de los planos.
+- Exportación de una o varias hojas, en un PDF único o en PDF separados.
+- Selección manual o detección automática de papel A0–A4.
+- Motor AutoCAD de máxima fidelidad y motor independiente experimental.
+- Barra de progreso y opción para evitar que los archivos se abran en un visor externo.
+- **Desde la versión 7.1.0:** búsqueda de actualizaciones al iniciar y botón para comprobarlas manualmente.
 
-## Descargar e instalar
+## Descargar
 
-Las versiones públicas se distribuirán desde **[Releases](https://github.com/elmasmejor-dev/automatic-cad-a-pdf-converter/releases)**. Todavía no se ha publicado una versión en esa sección.
+Los instaladores oficiales estarán publicados en **[GitHub Releases](https://github.com/elmasmejor-dev/automatic-cad-a-pdf-converter/releases)**.
 
-Cuando haya una publicación, abre la versión más reciente, descarga el instalador `.exe` y sigue el asistente.
+> Al preparar esta documentación, la publicación binaria de la versión 7.1.0 todavía está pendiente. No uses enlaces de descarga de terceros.
 
-**Requisitos:** Windows 10/11 de 64 bits. Para imprimir mediante el motor de AutoCAD, es necesario tener AutoCAD instalado. El instalador del programa incluye la configuración de su propio entorno Python.
+**Requisitos:** Windows 10/11 de 64 bits. El instalador prepara Python y las bibliotecas en la carpeta de la aplicación; para exportar con máxima fidelidad es necesario tener AutoCAD instalado.
 
 ## Actualizaciones
 
-Está previsto que la aplicación consulte la publicación más reciente al iniciarse y **pregunte al usuario** antes de descargar e instalar una actualización. Las actualizaciones no se instalarán sin su consentimiento.
-
-La dirección del servicio de versiones es:
+El programa consulta esta dirección de GitHub:
 
 ```text
 https://api.github.com/repos/elmasmejor-dev/automatic-cad-a-pdf-converter/releases/latest
 ```
 
-Este repositorio es el canal de **distribución y documentación**. No es necesario publicar aquí el código fuente de la aplicación.
+Cuando hay una versión estable más reciente, presenta las novedades y pregunta si deseas descargar e instalar. No instala nada sin confirmación. Comprueba además el SHA-256 informado por GitHub antes de ejecutar el archivo descargado.
 
-Consulta [cómo publicar una actualización](docs/PUBLICAR_ACTUALIZACIONES.md).
+Si no hay conexión, o todavía no hay una versión publicada, el programa continúa funcionando normalmente.
+
+La versión **7.0.1 y anteriores no tienen actualizador**, por lo que la transición a 7.1.0 requiere instalar el nuevo programa una vez de forma manual.
+
+## Para el desarrollador
+
+- [Guía para publicar versiones e instaladores](docs/PUBLICAR_ACTUALIZACIONES.md)
+- [Notas de la versión 7.1.0](docs/NOTAS_V7_1_0.md)
+
+El repositorio es un canal de documentación y distribución. No es necesario publicar el código fuente del programa para distribuir las versiones instalables.
