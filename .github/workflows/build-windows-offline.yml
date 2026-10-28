@@ -1,10 +1,11 @@
-name: Compilar instalador autonomo v7.2.6
+name: Compilar instalador autonomo v7.2.7
 on:
   workflow_dispatch:
   push:
     paths:
       - '.github/workflows/build-windows-offline.yml'
       - 'scripts/extract_and_patch.py'
+      - 'scripts/patch_plot_727.py'
       - 'scripts/source_patch.txt'
       - 'installer/AutomaticCADaPDF.iss'
 permissions:
@@ -33,6 +34,8 @@ jobs:
         run: |
           python scripts/extract_and_patch.py --installer Setup_Automatic_CAD_a_PDF_Converter_v7_2_2.exe --out app-src
           if ($LASTEXITCODE -ne 0) { throw 'Fallo el parche de codigo' }
+          python scripts/patch_plot_727.py app-src/automatic_cad_to_pdf.py
+          if ($LASTEXITCODE -ne 0) { throw 'Falló el parche de impresión' }
           python -m compileall -q app-src
       - name: Instalar dependencias para compilacion
         shell: pwsh
