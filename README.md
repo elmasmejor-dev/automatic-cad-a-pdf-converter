@@ -44,8 +44,10 @@ La versión **7.0.1 y anteriores no tienen actualizador**, por lo que la transic
 
 El repositorio es un canal de documentación y distribución. No es necesario publicar el código fuente del programa para distribuir las versiones instalables.
 
-## Versión 7.2.3 preparada para publicar
+## Última versión publicada: v7.2.7 🍪
 
-La versión **7.2.3** mejora la exportación a PDF cuando AutoCAD rechaza temporalmente llamadas de automatización. Consulta las [notas de la versión 7.2.3](docs/NOTAS_V7_2_3.md).
+**[Descargar Automatic CAD a PDF Converter v7.2.7](https://github.com/elmasmejor-dev/automatic-cad-a-pdf-converter/releases/tag/v7.2.7)**
 
-**Estado:** documentación preparada; el instalador todavía debe adjuntarse y publicarse en GitHub Releases. La última versión publicada actualmente es la v7.2.2.
+La v7.2.7 incluye Python 3.12 y las bibliotecas necesarias, mejora la verificación de los PDF generados por AutoCAD y registra diagnósticos de impresión. [Ver notas de la versión](docs/NOTAS_V7_2_7.md).
+
+Las aplicaciones que ya incorporan el actualizador pueden detectar esta versión desde GitHub Releases.
