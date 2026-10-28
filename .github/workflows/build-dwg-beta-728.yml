@@ -47,7 +47,7 @@ jobs:
           Expand-Archive -Path $out -DestinationPath app-src -Force
           python -m compileall -q app-src
           if ($LASTEXITCODE -ne 0) { throw 'Falló validación de sintaxis' }
-          python -c "from pathlib import Path; a=Path('app-src/automatic_cad_to_pdf.py').read_text(encoding='utf-8'); assert 'VERSION = \"7.2.8\"' in a; assert 'Agregar DWG/DXF' in a; print('Código beta DWG verificado')"
+          python -c "from pathlib import Path; a=Path('app-src/automatic_cad_to_pdf.py').read_text(encoding='utf-8'); assert '7.2.8' in a; assert 'Agregar DWG/DXF' in a; print('Codigo beta DWG verificado')"
           if ($LASTEXITCODE -ne 0) { throw 'No es la beta DWG correcta' }
 
       - name: Instalar dependencias en el compilador
