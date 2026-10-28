@@ -92,7 +92,7 @@ jobs:
           $setup='app-src/out/Setup_Automatic_CAD_a_PDF_Converter_v7_2_8_BETA_DWG.exe'
           if (-not (Test-Path $setup)) { throw 'El instalador beta no fue creado' }
           if ((Get-Item $setup).Length -lt 10000000) { throw 'Instalador incompleto' }
-          $m=(Get-Content $setup -Encoding Byte -TotalCount 2)
+          $m=(Get-Content $setup -AsByteStream -TotalCount 2)
           if ($m[0] -ne 77 -or $m[1] -ne 90) { throw 'El archivo no es un EXE de Windows' }
           Get-FileHash $setup -Algorithm SHA256 | Format-List
 
