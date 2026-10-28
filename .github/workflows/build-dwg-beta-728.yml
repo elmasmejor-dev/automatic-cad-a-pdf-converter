@@ -42,7 +42,7 @@ jobs:
           $out='beta-728.zip'
           [IO.File]::WriteAllBytes((Join-Path $PWD $out),[Convert]::FromBase64String((Get-Content $src -Raw).Trim()))
           $actual=(Get-FileHash $out -Algorithm SHA256).Hash.ToLowerInvariant()
-          $expected='05070017f29cca3b276005a7f6ec0404675de6f021059e7d2ede892085fbef78'
+          $expected='d061ac49d8d5b6b4b896235e8dee175539fc1fa97615a2d2a093e026f6b26880'
           if ($actual -ne $expected) { throw "Fuentes beta corruptas: $actual" }
           Expand-Archive -Path $out -DestinationPath app-src -Force
           python -m compileall -q app-src
