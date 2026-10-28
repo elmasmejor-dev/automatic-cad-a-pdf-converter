@@ -66,7 +66,7 @@ def main():
     for name,b in files.items(): (dst/name).write_bytes(b)
     for name in ("automatic_cad_to_pdf.py","update_manager.py","dxfless_renderer.py"):
         compile((dst/name).read_text(encoding="utf-8"),str(dst/name),"exec")
-    assert 'VERSION = "7.2.6"' in (dst/"automatic_cad_to_pdf.py").read_text()
+    assert 'VERSION = "7.2.6"' in (dst/"automatic_cad_to_pdf.py").read_text(encoding="utf-8")
     print("Código comprobado de v7.2.6 recuperado",len(files),"archivos")
 
 if __name__=="__main__":
