@@ -31,3 +31,14 @@ Por ahora **no se ha subido código fuente de la aplicación a este repositorio 
 El primer método usa AutoCAD sobre una copia temporal, no sobre el DWG original. Autodesk documenta que `Document.SaveAs` cambia el nombre del documento activo; por eso la copia de trabajo es esencial.
 
 El método opcional sin AutoCAD requerirá revisar previamente las condiciones de uso y distribución de ODA File Converter.
+
+
+## Integración DWG/DXF terminada en la beta de código
+
+Se creó un paquete local **v7.2.8 Beta DWG** con el flujo de importación DWG implementado en la interfaz: selección conjunta DWG/DXF, conversión de una copia temporal con AutoCAD ActiveX a DXF 2018, caché y comprobación de modificaciones, detección adicional de marcos dentro de bloques, nombres originales y exportación de máxima fidelidad desde el DWG original en solo lectura.
+
+La beta conserva las medidas de seguridad de esta rama. El renderizador sin AutoCAD se bloquea para DWG porque podría omitir XREF y objetos proxy.
+
+**Pruebas locales:** 18/18 automáticas aprobadas; el detector reconoció 83 láminas del DXF de referencia; la GUI se abrió en una pantalla virtual. Los dos DWG de referencia tienen cabecera AC1032 pero **no se verificó una conversión real con AutoCAD 2026**, que no está disponible en el entorno de desarrollo.
+
+**Estado de publicación:** todavía no se generó un instalador Windows beta válido ni se publicaron Releases nuevos. La v7.2.7 sigue siendo estable. El paquete de código y scripts de compilación está disponible como artefacto de la conversación.
