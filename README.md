@@ -19,7 +19,7 @@ Aplicación para Windows que detecta automáticamente láminas de archivos **DXF
 
 Los instaladores oficiales estarán publicados en **[GitHub Releases](https://github.com/elmasmejor-dev/automatic-cad-a-pdf-converter/releases)**.
 
-> Al preparar esta documentación, la publicación binaria de la versión 7.1.0 todavía está pendiente. No uses enlaces de descarga de terceros.
+La versión estable publicada más reciente se encuentra en la página de Releases. Descarga únicamente los instaladores adjuntos a publicaciones oficiales.
 
 **Requisitos:** Windows 10/11 de 64 bits. El instalador prepara Python y las bibliotecas en la carpeta de la aplicación; para exportar con máxima fidelidad es necesario tener AutoCAD instalado.
 
@@ -44,6 +44,6 @@ La versión **7.0.1 y anteriores no tienen actualizador**, por lo que la transic
 
 El repositorio es un canal de documentación y distribución. No es necesario publicar el código fuente del programa para distribuir las versiones instalables.
 
-## Próxima publicación
+## Versión 7.2.2 preparada para publicar
 
-Se ha preparado la **versión 7.2.1**, que propone nombres de PDF basados en el archivo DXF. Consulta las [notas de la v7.2.1](docs/NOTAS_V7_2_1.md). Hasta que se adjunte el instalador a GitHub Releases y se publique, la última versión ofrecida por el actualizador puede seguir siendo anterior.
+La **v7.2.2** mejora la interfaz en pantallas de 14 pulgadas. Consulta las [notas de la versión 7.2.2](docs/NOTAS_V7_2_2.md). El instalador debe adjuntarse y publicarse en GitHub Releases antes de que el actualizador pueda ofrecerlo.
