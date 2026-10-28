@@ -65,7 +65,7 @@ jobs:
         run: |
           & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' 'installer/AutomaticCADaPDF.iss'
           if ($LASTEXITCODE -ne 0) { throw 'Inno Setup fallo' }
-          $setup = 'out/Setup_Automatic_CAD_a_PDF_Converter_v7_2_6.exe'
+          $setup = 'out/Setup_Automatic_CAD_a_PDF_Converter_v7_2_7.exe'
           if (-not (Test-Path $setup)) { throw 'Falta instalador final' }
           $size = (Get-Item $setup).Length
           if ($size -lt 10000000) { throw 'El instalador es demasiado pequeno' }
@@ -73,7 +73,7 @@ jobs:
       - name: Publicar archivo instalador en GitHub Actions
         uses: actions/upload-artifact@v4
         with:
-          name: Automatic_CAD_a_PDF_Converter_v7_2_6_Offline
-          path: out/Setup_Automatic_CAD_a_PDF_Converter_v7_2_6.exe
+          name: Automatic_CAD_a_PDF_Converter_v7_2_7_Offline
+          path: out/Setup_Automatic_CAD_a_PDF_Converter_v7_2_7.exe
           if-no-files-found: error
           retention-days: 30
