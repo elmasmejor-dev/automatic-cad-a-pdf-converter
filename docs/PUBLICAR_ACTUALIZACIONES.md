@@ -44,3 +44,12 @@ https://github.com/elmasmejor-dev/automatic-cad-a-pdf-converter/releases
 Para probar una actualización de verdad, instala una versión anterior que contenga el actualizador y publica después una versión superior. La 7.0.1 no detecta actualizaciones automáticamente.
 
 Firma digitalmente el instalador si vas a distribuirlo ampliamente, además de verificar su integridad con SHA-256.
+
+
+## Ensayo de la actualización 7.1 → 7.2
+
+- [Notas y comprobaciones de la versión 7.2.0](NOTAS_V7_2_0.md).
+- Publica un Release estable con tag `v7.2.0`, adjuntando el archivo `Setup_Automatic_CAD_a_PDF_Converter_v7_2_0.exe`.
+- Abre la app **7.1.0 instalada** para probar la detección antes de instalar el archivo manualmente.
+- La aplicación 7.1.0 cierra su ventana tras iniciar el instalador; la instalación 7.2.0 espera a que el programa termine de cerrarse antes de sustituir los archivos.
+- A partir de la aplicación 7.2.0, un ayudante nativo espera directamente al cierre de Python antes de iniciar posteriores instaladores.
