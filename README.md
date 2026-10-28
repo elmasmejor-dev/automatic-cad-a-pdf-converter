@@ -43,3 +43,7 @@ La versión **7.0.1 y anteriores no tienen actualizador**, por lo que la transic
 - [Notas de la versión 7.1.0](docs/NOTAS_V7_1_0.md)
 
 El repositorio es un canal de documentación y distribución. No es necesario publicar el código fuente del programa para distribuir las versiones instalables.
+
+## Próxima publicación
+
+Se ha preparado la **versión 7.2.1**, que propone nombres de PDF basados en el archivo DXF. Consulta las [notas de la v7.2.1](docs/NOTAS_V7_2_1.md). Hasta que se adjunte el instalador a GitHub Releases y se publique, la última versión ofrecida por el actualizador puede seguir siendo anterior.
