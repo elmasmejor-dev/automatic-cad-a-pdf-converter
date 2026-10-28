@@ -44,6 +44,8 @@ La versión **7.0.1 y anteriores no tienen actualizador**, por lo que la transic
 
 El repositorio es un canal de documentación y distribución. No es necesario publicar el código fuente del programa para distribuir las versiones instalables.
 
-## Versión 7.2.2 preparada para publicar
+## Versión 7.2.3 preparada para publicar
 
-La **v7.2.2** mejora la interfaz en pantallas de 14 pulgadas. Consulta las [notas de la versión 7.2.2](docs/NOTAS_V7_2_2.md). El instalador debe adjuntarse y publicarse en GitHub Releases antes de que el actualizador pueda ofrecerlo.
+La versión **7.2.3** mejora la exportación a PDF cuando AutoCAD rechaza temporalmente llamadas de automatización. Consulta las [notas de la versión 7.2.3](docs/NOTAS_V7_2_3.md).
+
+**Estado:** documentación preparada; el instalador todavía debe adjuntarse y publicarse en GitHub Releases. La última versión publicada actualmente es la v7.2.2.
