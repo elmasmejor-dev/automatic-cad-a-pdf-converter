@@ -44,12 +44,14 @@ La versión **7.0.1 y anteriores no tienen actualizador**, por lo que la transic
 
 El repositorio es un canal de documentación y distribución. No es necesario publicar el código fuente del programa para distribuir las versiones instalables.
 
-## Última versión publicada: v7.2.10 🍪
+## Última versión publicada: v7.2.11 🍪
 
-**[Descargar Automatic CAD a PDF Converter v7.2.10](https://github.com/elmasmejor-dev/automatic-cad-a-pdf-converter/releases/tag/v7.2.10)**
+**[Descargar Automatic CAD a PDF Converter v7.2.11](https://github.com/elmasmejor-dev/automatic-cad-a-pdf-converter/releases/tag/v7.2.11)**
 
-Esta versión corrige que se exporten DXF de sesiones anteriores después de usar **Vaciar lista**, mantiene **Quitar láminas** individualmente y mejora la **sobrescritura segura de archivos PDF**.
+Esta actualización mejora la recuperación ante errores de impresión `PlotToFile` de AutoCAD durante la exportación de cualquier lámina. También conserva las correcciones de **Vaciar lista**, la eliminación individual de hojas y la protección para no sobrescribir un PDF anterior si el proceso falla.
 
-El instalador de actualización reemplaza correctamente la versión estable anterior. La compatibilidad DWG continúa en desarrollo independiente y no forma parte de esta versión.
+Incluye Python 3.12 y sus bibliotecas. El instalador oficial mantiene la identidad de las versiones estables anteriores y permite su actualización.
 
-[Ver notas completas de v7.2.10](docs/NOTAS_V7_2_10.md).
+La compatibilidad DWG directa permanece en desarrollo independiente y no está incluida en esta versión estable.
+
+[Ver todas las novedades de la v7.2.11](docs/NOTAS_V7_2_11.md).
