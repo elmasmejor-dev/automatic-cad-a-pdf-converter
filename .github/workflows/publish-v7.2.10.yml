@@ -28,9 +28,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           New-Item -ItemType Directory -Path approved -Force | Out-Null
-          gh run download 41233191559 --repo "$env:GITHUB_REPOSITORY" --name Automatic_CAD_a_PDF_Converter_v7_2_10 --dir approved
+          gh run download 41233191559 --repo "$env:GITHUB_REPOSITORY" --name Automatic_CAD_a_PDF_Converter_v7_2_10_PRUEBA --dir approved
           if ($LASTEXITCODE -ne 0) { throw 'No se pudo recuperar el instalador aprobado' }
-          $file='approved/Setup_Automatic_CAD_a_PDF_Converter_v7_2_10.exe'
+          $file='approved/Setup_Automatic_CAD_a_PDF_Converter_v7_2_10_PRUEBA.exe'
           if (-not (Test-Path $file)) { throw 'No se encontró el instalador probado' }
           $sha=(Get-FileHash $file -Algorithm SHA256).Hash.ToLowerInvariant()
           if ($sha -ne '90f4ca2205373e0de2ad3182ba6bfa98e4473e8ebe44c95cad7bb7f7b1b79bc0') { throw "El instalador de prueba cambió: $sha" }
@@ -51,7 +51,7 @@ jobs:
         run: |
           Copy-Item scripts/pdf_safety_729.py app-src/pdf_safety.py
           python scripts/patch_stable_729.py app-src
-          if ($LASTEXITCODE -ne 0) { throw 'No se pudo reconstruir la base v7.2.10' }
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo reconstruir la base v7.2.9' }
           python scripts/patch_stable_7210.py app-src/automatic_cad_to_pdf.py
           if ($LASTEXITCODE -ne 0) { throw 'No se pudo aplicar la corrección de lista v7.2.10' }
           python -m compileall -q app-src
@@ -80,7 +80,7 @@ jobs:
           if (-not (Get-ChildItem $dir -Filter python312.dll -Recurse -ErrorAction SilentlyContinue)) { throw 'Python integrado ausente' }
           Copy-Item app-src/galleta.ico $dir
           Copy-Item app-src/AutomaticCadUpdateHelper.exe $dir
-      - name: Generar instalador de prueba independiente
+      - name: Generar instalador oficial para actualizar la versión estable
         shell: pwsh
         run: |
           $compiler='C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
