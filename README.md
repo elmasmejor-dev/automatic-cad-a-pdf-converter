@@ -21,7 +21,7 @@ Los instaladores oficiales estarán publicados en **[GitHub Releases](https://gi
 
 La versión estable publicada más reciente se encuentra en la página de Releases. Descarga únicamente los instaladores adjuntos a publicaciones oficiales.
 
-**Requisitos:** Windows 10/11 de 64 bits. El instalador prepara Python y las bibliotecas en la carpeta de la aplicación; para exportar con máxima fidelidad es necesario tener AutoCAD instalado.
+**Requisitos:** Windows 10/11 de 64 bits. El instalador incluye Python 3.12 y las bibliotecas necesarias, sin requerir una instalación de Python separada; para exportar con máxima fidelidad es necesario tener AutoCAD instalado.
 
 ## Actualizaciones
 
@@ -44,10 +44,12 @@ La versión **7.0.1 y anteriores no tienen actualizador**, por lo que la transic
 
 El repositorio es un canal de documentación y distribución. No es necesario publicar el código fuente del programa para distribuir las versiones instalables.
 
-## Última versión publicada: v7.2.7 🍪
+## Última versión publicada: v7.2.10 🍪
 
-**[Descargar Automatic CAD a PDF Converter v7.2.7](https://github.com/elmasmejor-dev/automatic-cad-a-pdf-converter/releases/tag/v7.2.7)**
+**[Descargar Automatic CAD a PDF Converter v7.2.10](https://github.com/elmasmejor-dev/automatic-cad-a-pdf-converter/releases/tag/v7.2.10)**
 
-La v7.2.7 incluye Python 3.12 y las bibliotecas necesarias, mejora la verificación de los PDF generados por AutoCAD y registra diagnósticos de impresión. [Ver notas de la versión](docs/NOTAS_V7_2_7.md).
+Esta versión corrige que se exporten DXF de sesiones anteriores después de usar **Vaciar lista**, mantiene **Quitar láminas** individualmente y mejora la **sobrescritura segura de archivos PDF**.
 
-Las aplicaciones que ya incorporan el actualizador pueden detectar esta versión desde GitHub Releases.
+El instalador de actualización reemplaza correctamente la versión estable anterior. La compatibilidad DWG continúa en desarrollo independiente y no forma parte de esta versión.
+
+[Ver notas completas de v7.2.10](docs/NOTAS_V7_2_10.md).
