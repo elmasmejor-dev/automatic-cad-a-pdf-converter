@@ -38,7 +38,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'No se pudo aplicar el parche v7.2.9' }
           python -m compileall -q app-src
           if ($LASTEXITCODE -ne 0) { throw 'Error de sintaxis del programa' }
-          python -c "import pathlib; s=pathlib.Path('app-src/automatic_cad_to_pdf.py').read_text(encoding='utf-8'); assert 'VERSION = \"7.2.9\"' in s; assert 'Vaciar lista' in s; assert 'dwg_bridge' not in s; print('Base DXF estable verificada')"
+          python -c "import pathlib; s=pathlib.Path('app-src/automatic_cad_to_pdf.py').read_text(encoding='utf-8'); assert ('VERSION = '+chr(34)+'7.2.9'+chr(34)) in s; assert 'Vaciar lista' in s; assert 'dwg_bridge' not in s; print('Base DXF estable verificada')"
           if ($LASTEXITCODE -ne 0) { throw 'Código base no coincide' }
       - name: Preparar dependencias Windows y verificar sobrescritura de PDF
         shell: pwsh
