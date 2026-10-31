@@ -128,7 +128,7 @@ def patch(folder):
 """
     s=s.replace('errors=[]; parts={}; generated=[];reserved=set();done=0',
                 'errors=[]; parts={};done=0',1)
-    s+='\\n'+RENDER_HELPER
+    s+='\n'+RENDER_HELPER
     compile(s,str(renderer),'exec')
     renderer.write_text(s,encoding='utf-8')
     print('Stable DXF v7.2.9 patched: clear all sheets, safe PDF overwrite, no partial PDF')
