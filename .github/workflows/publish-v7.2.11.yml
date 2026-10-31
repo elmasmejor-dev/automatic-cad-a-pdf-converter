@@ -1,0 +1,121 @@
+name: Publicar actualización estable v7.2.11
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-v7.2.11.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: release-v7-2-11
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
+      - name: Verificar integridad del instalador de prueba aprobado
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          New-Item -ItemType Directory -Path approved -Force | Out-Null
+          gh run download 41236491623 --repo "$env:GITHUB_REPOSITORY" --name Automatic_CAD_a_PDF_Converter_v7_2_11_PRUEBA --dir approved
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo descargar la prueba v7.2.11' }
+          $exe = 'approved/Setup_Automatic_CAD_a_PDF_Converter_v7_2_11_PRUEBA.exe'
+          if (-not (Test-Path $exe)) { throw 'No se encontró el instalador de prueba' }
+          $hash = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($hash -ne 'a07d15daedeb9d4bb7cf024081bc20e84491dfc4650243d928397034dcca5a1a') { throw "Checksum de beta inesperado: $hash" }
+          if ((Get-Item $exe).Length -lt 90000000) { throw 'Instalador beta incompleto' }
+          Write-Host "Compilación de prueba aprobada: $hash"
+      - name: Recuperar código de la versión estable 7.2.7
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download v7.2.2 --repo "$env:GITHUB_REPOSITORY" --pattern Setup_Automatic_CAD_a_PDF_Converter_v7_2_2.exe --dir . --clobber
+          if ($LASTEXITCODE -ne 0) { throw 'Falta instalador base verificado' }
+          python scripts/extract_and_patch.py --installer Setup_Automatic_CAD_a_PDF_Converter_v7_2_2.exe --out app-src
+          if ($LASTEXITCODE -ne 0) { throw 'Extracción verificada falló' }
+          python scripts/patch_plot_727.py app-src/automatic_cad_to_pdf.py
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo reconstruir v7.2.7' }
+      - name: Aplicar cambios de borrado y PDF sin mezclar beta DWG
+        shell: pwsh
+        run: |
+          Copy-Item scripts/pdf_safety_729.py app-src/pdf_safety.py
+          python scripts/patch_stable_729.py app-src
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo reconstruir la base v7.2.10' }
+          python scripts/patch_stable_7210.py app-src/automatic_cad_to_pdf.py
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo aplicar la corrección de lista v7.2.10' }
+          python scripts/patch_plot_7211.py app-src/automatic_cad_to_pdf.py
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo aplicar la recuperación de impresión v7.2.11' }
+          python -m compileall -q app-src
+          if ($LASTEXITCODE -ne 0) { throw 'Error de sintaxis del programa' }
+          python -c "import pathlib; s=pathlib.Path('app-src/automatic_cad_to_pdf.py').read_text(encoding='utf-8'); assert ('VERSION = '+chr(34)+'7.2.11'+chr(34)) in s; assert 'Vaciar lista' in s; assert 'dwg_bridge' not in s; print('Base DXF estable verificada')"
+          if ($LASTEXITCODE -ne 0) { throw 'Código base no coincide' }
+          $env:PYTHONPATH=(Resolve-Path 'app-src').Path
+          python -c "from unittest.mock import Mock; import automatic_cad_to_pdf as m; e=Exception('COM temporal'); e.hresult=-2147352567; assert m.error_del_servidor_com(e); assert '0x80020009' in m.detalle_error_plot(e); m.pausa_autocad=lambda t:None; m.diagnostico_impresion=lambda s:None; d=Mock(); d.Plot.PlotToFile.side_effect=[e,True]; m.esperar_pdf_completo=lambda p,t=5:d.Plot.PlotToFile.call_count>=2; m.recuperar_ploteo_despues_de_com=lambda *a,**k:None; res=m.plotear_con_recuperacion(d,'hoja_test.pdf',lambda msg:None,intentos=2); assert d.Plot.PlotToFile.call_count==2; assert res.name.endswith('intento_2.pdf'); print('Recuperación COM PlotToFile probada en Windows')"
+          if ($LASTEXITCODE -ne 0) { throw 'Fallo test COM' }
+          $env:PYTHONPATH=(Resolve-Path 'app-src').Path
+          python -c "from unittest.mock import Mock,patch; import automatic_cad_to_pdf as m; u=Mock(); u.busy=False; u.generacion_proyecto=0; u.archivos=['old.dxf']; u.marcos=[m.Marco('old.dxf',0,0,420,297)]; u.preview_data={};u.preview_pending=set();u.mapa_miniaturas={};u.mapa_fotos={};u.mapa_image_refs=[];u.mapa_rectangulos={}; p=patch.object(m.messagebox,'askyesno',return_value=True);p.start();m.GUI.vaciar_laminas(u);p.stop();assert not u.archivos and not u.marcos and u.generacion_proyecto==1;print('Prueba vaciar sesión: OK')"
+          if ($LASTEXITCODE -ne 0) { throw 'Falló la prueba de vaciado y limpieza de DXF' }
+      - name: Preparar dependencias Windows y verificar sobrescritura de PDF
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --only-binary=:all: "pyinstaller>=6.10,<7" pywin32 pypdf pillow ezdxf pymupdf
+          if ($LASTEXITCODE -ne 0) { throw 'Faltan dependencias Windows' }
+          $env:PYTHONPATH = (Resolve-Path 'app-src').Path
+          python -c "import tempfile,pathlib; from pypdf import PdfWriter,PdfReader; from pdf_safety import publicar_pdf_atomico; d=pathlib.Path(tempfile.mkdtemp()); out=d/'final.pdf'; out.write_bytes(b'OLD'); p=d/'temp.pdf'; w=PdfWriter(); w.add_blank_page(width=595,height=842); w.write(str(p)); w.close(); publicar_pdf_atomico(p,out,1); assert len(PdfReader(str(out)).pages)==1; print('Sobrescritura segura: OK')"
+          if ($LASTEXITCODE -ne 0) { throw 'Falló prueba de PDF en Windows' }
+      - name: Compilar ejecutable con Python incluido
+        shell: pwsh
+        run: |
+          python -m PyInstaller --noconfirm --clean --onedir --windowed --name "Automatic CAD a PDF Converter" --icon "app-src/galleta.ico" --paths app-src --hidden-import pythoncom --hidden-import pywintypes --hidden-import win32timezone --hidden-import win32com.client --hidden-import update_manager --hidden-import dxfless_renderer --hidden-import pdf_safety --collect-submodules win32com --collect-all ezdxf --collect-all pymupdf --add-data "app-src/galleta.png;." --add-data "app-src/galleta_ui.png;." --add-data "app-src/galleta.ico;." app-src/automatic_cad_to_pdf.py
+          if ($LASTEXITCODE -ne 0) { throw 'PyInstaller falló' }
+          $dir='dist/Automatic CAD a PDF Converter'
+          if (-not (Test-Path "$dir/Automatic CAD a PDF Converter.exe")) { throw 'EXE ausente' }
+          if (-not (Get-ChildItem $dir -Filter python312.dll -Recurse -ErrorAction SilentlyContinue)) { throw 'Python integrado ausente' }
+          Copy-Item app-src/galleta.ico $dir
+          Copy-Item app-src/AutomaticCadUpdateHelper.exe $dir
+      - name: Generar instalador oficial con identidad estable
+        shell: pwsh
+        run: |
+          $compiler='C:\Program Files (x86)\Inno Setup 6\ISCC.exe'
+          if (-not (Test-Path $compiler)) { choco install innosetup -y --no-progress }
+          if (-not (Test-Path $compiler)) { throw 'No se encontró Inno Setup' }
+          & $compiler 'installer/AutomaticCADaPDF_7211_RELEASE.iss'
+          if ($LASTEXITCODE -ne 0) { throw 'Inno Setup falló' }
+          $exe='out/Setup_Automatic_CAD_a_PDF_Converter_v7_2_11.exe'
+          if (-not (Test-Path $exe)) { throw 'No se generó el instalador' }
+          if ((Get-Item $exe).Length -lt 10000000) { throw 'Instalador incompleto' }
+          Get-FileHash $exe -Algorithm SHA256 | Format-List
+      - name: Publicar v7.2.11 y verificar GitHub Releases
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $existing = gh release view v7.2.11 --repo "$env:GITHUB_REPOSITORY" 2>$null
+          if ($LASTEXITCODE -eq 0) { throw 'La versión v7.2.11 ya existe y no se sobrescribirá' }
+          $exe = 'out/Setup_Automatic_CAD_a_PDF_Converter_v7_2_11.exe'
+          if (-not (Test-Path $exe)) { throw 'No existe instalador oficial' }
+          $bytes=(Get-Item $exe).Length
+          if ($bytes -lt 90000000) { throw "Instalador oficial demasiado pequeño: $bytes" }
+          $reader=[System.IO.File]::OpenRead((Resolve-Path $exe))
+          try { if ($reader.ReadByte() -ne 77 -or $reader.ReadByte() -ne 90) { throw 'Cabecera PE incorrecta' } } finally { $reader.Dispose() }
+          $sha=(Get-FileHash $exe -Algorithm SHA256).Hash.ToLowerInvariant()
+          Write-Host "SHA-256 instalador oficial: $sha"
+          gh release create v7.2.11 $exe --repo "$env:GITHUB_REPOSITORY" --target main --title "Automatic CAD a PDF Converter v7.2.11" --notes-file 'docs/NOTAS_V7_2_11.md' --latest
+          if ($LASTEXITCODE -ne 0) { throw 'No se pudo crear Release estable v7.2.11' }
+          $release=gh api "repos/$env:GITHUB_REPOSITORY/releases/latest" | ConvertFrom-Json
+          if ($release.tag_name -ne 'v7.2.11' -or $release.draft -or $release.prerelease) { throw 'Versión publicada no es estable/latest' }
+          $assets=@($release.assets)
+          if ($assets.Count -ne 1 -or $assets[0].name -ne 'Setup_Automatic_CAD_a_PDF_Converter_v7_2_11.exe') { throw 'Asset oficial incorrecto' }
+          if ($assets[0].digest -ne "sha256:$sha") { throw 'Checksum del asset publicado diferente' }
+          Write-Host "PUBLICACIÓN CONFIRMADA: $($release.html_url)"
